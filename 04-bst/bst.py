@@ -118,6 +118,12 @@ class BinarySearchTree:
 
     def preorder_iterative(self, node):
         pass
+
+    def height(self, node):
+        if node is None:
+            return 0
+        else:
+            return max(self.height(node.left), self.height(node.right)) + 1
                 
 
 
@@ -132,4 +138,5 @@ if __name__ == "__main__":
     bst.remove(140)
     bst.preorder(bst.root)
     # print("Successor 100: ", bst.successor(bst.root))
+    print(bst.height(bst.root))
 
