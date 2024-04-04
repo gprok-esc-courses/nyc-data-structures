@@ -5,12 +5,12 @@ class TreeNode:
         self.left = None
         self.right = None
         self.parent = None
+        self.color = 'red'
     
     def __str__(self) -> str:
         return str(self.value)
-
-
-class BinarySearchTree:
+    
+class RedBlackTree:
     def __init__(self) -> None:
         self.root = None
 
@@ -40,38 +40,9 @@ class BinarySearchTree:
                     else:
                         iter = iter.left
 
-    def preorder(self, node):
-        if node is not None:
-            print(node.value)
-            self.preorder(node.left)
-            self.preorder(node.right)
+    def rb_insert_fixup(self):
+        pass
 
-    def find(self, value):
-        iter = self.root
-        while iter is not None:
-            if iter.value == value:
-                return iter
-            elif iter.value > value:
-                iter = iter.left
-            else:
-                iter = iter.right
-        return None
-    
-    def is_leaf(self, node):
-        return node.left is None and node.right is None
-    
-    def has_single_child(self, node):
-        return node.left is None or node.right is None
-    
-    def successor(self, node):
-        if node.right is None:
-            return None
-        else: 
-            iter = node.right
-            while iter.left is not None:
-                iter = iter.left
-            return iter
-    
     def remove(self, value):
         node = self.find(value)
         if node is not None:
@@ -104,10 +75,7 @@ class BinarySearchTree:
                     self.remove(next.value)
                     node.value = v
 
-    def max(self):
-        pass
-
-    def min(self):
+    def remove_fixup(self, x):
         pass
 
     def inorder(self, node):
@@ -116,41 +84,10 @@ class BinarySearchTree:
             print(node.value)
             self.inorder(node.right)
 
-    def postorder(self, node):
-        pass
-
-    def inorder_iterative(self, node):
-        stack = []
-        iter = self.root
-        while iter is not None or len(stack) > 0:
-            if iter is None:
-                iter = stack.pop()
-                print(iter.value, end=' ')
-                iter = iter.right
-            else:
-                stack.append(iter)
-                iter = iter.left
-        print()
-
     def height(self, node):
         if node is None:
             return 0
         else:
             return max(self.height(node.left), self.height(node.right)) + 1
-                
 
-
-if __name__ == "__main__":
-    bst = BinarySearchTree()
-    data = [100, 80, 70, 90, 45, 85, 94, 130, 120, 140, 135]
-    for v in data:
-        bst.insert(v)
-    bst.preorder(bst.root)
-    print("Search 94: ", bst.find(94))
-    print("Search 88: ", bst.find(88))
-    # bst.remove(140)
-    bst.preorder(bst.root)
-    # print("Successor 100: ", bst.successor(bst.root))
-    print("Height: ", bst.height(bst.root))
-    bst.inorder_iterative(bst.root)
-
+    
