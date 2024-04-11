@@ -161,7 +161,7 @@ class RedBlackTree:
     def height(self, node):
         if node is None:
             return 0
-        else:cd 
+        else:
             return max(self.height(node.left), self.height(node.right)) + 1
 
 
