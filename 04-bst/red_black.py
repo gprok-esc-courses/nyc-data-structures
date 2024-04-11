@@ -91,7 +91,7 @@ class RedBlackTree:
                 elif z == z.parent.right:  # Case 2
                     z = z.parent
                     self.left_rotate(z)
-                if z.parent is not None and z.parent.parent is not None:
+                elif z.parent is not None and z.parent.parent is not None:
                     z.parent.color = 'black'
                     z.parent.parent.color = 'red'
                     self.right_rotate(z.parent.parent)
@@ -105,7 +105,7 @@ class RedBlackTree:
                 elif z == z.parent.left:  # Case 2
                     z = z.parent
                     self.right_rotate(z)
-                if z.parent is not None and z.parent.parent is not None:
+                elif z.parent is not None and z.parent.parent is not None:
                     z.parent.color = 'black'
                     z.parent.parent.color = 'red'
                     self.left_rotate(z.parent.parent)
@@ -168,7 +168,8 @@ class RedBlackTree:
 if __name__ == "__main__":
     bst = RedBlackTree()
     # data = [100, 80, 70, 90, 45, 85, 94] # , 130, 120, 140, 135]
-    data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200]
+    data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260]
+    data.sort(reverse=True)
     for v in data:
         bst.insert(v)
     bst.preorder(bst.root)
