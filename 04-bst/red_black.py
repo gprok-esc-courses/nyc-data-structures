@@ -6,7 +6,10 @@ class TreeNode:
         self.right = None
         self.parent = None
         self.color = 'red'
-    
+        # next variables is used by pretty print
+        self.level = 0
+        self.tree_layout = []
+
     def __str__(self) -> str:
         return str(self.value)
     
@@ -40,7 +43,12 @@ class RedBlackTree:
                         added = True
                     else:
                         iter = iter.left
+            # print("BEFORE")
+            # bst.pretty_print_tree()
             self.rb_insert_fixup(node)
+            # print("AFTER")
+            # bst.pretty_print_tree()
+            # x = input("continue, click any key")
 
     
     def is_root(self, x):
@@ -78,6 +86,7 @@ class RedBlackTree:
             x.parent.right = y
         y.right = x 
         x.parent = y
+         
 
     def rb_insert_fixup(self, z):
         while z.parent is not None and z.parent.color == 'red':
@@ -91,7 +100,7 @@ class RedBlackTree:
                 elif z == z.parent.right:  # Case 2
                     z = z.parent
                     self.left_rotate(z)
-                elif z.parent is not None and z.parent.parent is not None:
+                else: # z.parent is not None and z.parent.parent is not None:
                     z.parent.color = 'black'
                     z.parent.parent.color = 'red'
                     self.right_rotate(z.parent.parent)
@@ -105,7 +114,7 @@ class RedBlackTree:
                 elif z == z.parent.left:  # Case 2
                     z = z.parent
                     self.right_rotate(z)
-                elif z.parent is not None and z.parent.parent is not None:
+                else: # z.parent is not None and z.parent.parent is not None:
                     z.parent.color = 'black'
                     z.parent.parent.color = 'red'
                     self.left_rotate(z.parent.parent)
@@ -163,15 +172,42 @@ class RedBlackTree:
             return 0
         else:
             return max(self.height(node.left), self.height(node.right)) + 1
+        
+    def pretty_print_tree(self):
+        self.level = -1
+        h = self.height(self.root)
+        self.tree_layout = [[] for i in range(h)]
+        self.pretty_print_recursion(self.root, h)
+        for row in self.tree_layout:
+            print(row)
+
+
+    def pretty_print_recursion(self, node, h):
+        self.level += 1
+        if self.level < h:
+            if node is None:
+                self.tree_layout[self.level].append('N-b')
+            else:
+                self.tree_layout[self.level].append(str(node.value)+"-"+node.color[0])
+                self.pretty_print_recursion(node.left, h)
+                self.pretty_print_recursion(node.right, h)
+        self.level -= 1
+
+
 
 
 if __name__ == "__main__":
     bst = RedBlackTree()
     # data = [100, 80, 70, 90, 45, 85, 94] # , 130, 120, 140, 135]
-    data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260]
-    data.sort(reverse=True)
-    for v in data:
+    # data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260]
+    # data = [100, 80, 40, 90, 85, 95, 130, 110, 140]
+    # data.sort(reverse=True)
+    for v in range(1, 1000000):
         bst.insert(v)
-    bst.preorder(bst.root)
-    print("ROOT:", bst.root.value)
-    print("HEIGHT:", bst.height(bst.root))
+    # bst.preorder(bst.root)
+    # print("ROOT:", bst.root.value)
+    # print("HEIGHT:", bst.height(bst.root))
+    # bst.pretty_print_tree()
+    print(bst.height(bst.root))
+    
+    
