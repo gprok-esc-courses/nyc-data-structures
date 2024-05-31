@@ -49,7 +49,7 @@ class Graph:
         for key in self.vertices:
             print(self.vertices[key]) 
 
-    def init_bfs(self, start):
+    def initialize_single_source(self, start):
         for v in self.vertices:
             self.vertices[v].color = 'white'
             self.vertices[v].parent = None
@@ -61,7 +61,7 @@ class Graph:
         if start not in self.vertices:
             print("Start vertex not in Graph")
             return
-        self.init_bfs(start)
+        self.initialize_single_source(start)
         q = []
         q.append(self.vertices[start])
         while len(q) > 0:
@@ -75,7 +75,28 @@ class Graph:
                     q.append(dest)
             vertex.color = 'black'
 
-    def print_path_bfs(self, start: int, dest: int) -> str:
+
+    def dijkstra(self, start):
+        if start not in self.vertices:
+            print("Start vertex not in Graph")
+            return
+        self.initialize_single_source(start)
+        Q = []
+        for v in self.vertices:
+            Q.append(self.vertices[v])
+        while len(Q) > 0:
+            Q.sort(key=lambda x : x.distance)
+            u = Q.pop(0)
+            for e in u.edges:
+                self.relax(u, e.destination, e.weight)
+
+    def relax(self, u, v, w):
+        if u.distance + w < v.distance:
+            v.distance = u.distance + w
+            v.parent = u
+
+
+    def get_path(self, start: int, dest: int) -> str:
         if dest not in self.vertices:
             return "Destination not in Graph"
         path = ''
@@ -92,14 +113,14 @@ if __name__ == "__main__":
     graph2 = Graph()
     graph2.directed = True
 
-    print("GRAPH 1")
-    for i in range(1, 8):
-        graph1.add_vertex(i)
-    e = [[1, 2], [1, 5], [2, 3], [2, 5], [2, 4], [3, 4], [4, 5], [6, 7]]
-    for edge in e:
-        graph1.add_edge(edge[0], edge[1])
-    graph1.bfs(1)
-    print(graph1.print_path_bfs(1, 5))
+    # print("GRAPH 1")
+    # for i in range(1, 8):
+    #     graph1.add_vertex(i)
+    # e = [[1, 2], [1, 5], [2, 3], [2, 5], [2, 4], [3, 4], [4, 5], [6, 7]]
+    # for edge in e:
+    #     graph1.add_edge(edge[0], edge[1])
+    # graph1.bfs(1)
+    # print(graph1.print_path_bfs(1, 5))
     
     # graph1.display()
 
@@ -110,3 +131,21 @@ if __name__ == "__main__":
     # for edge in e:
     #     graph2.add_edge(edge[0], edge[1])
     # graph2.display()
+
+    print("GRAPH 3 - for Dijkstra")
+    vert = ['s', 't', 'y', 'x', 'z', 'w']
+    edg = [['s', 't', 10], ['s', 'y', 5], ['t', 'y', 2], ['t', 'x', 1],
+           ['y', 't', 3], ['y', 'z', 2], ['y', 'x', 9], ['z', 's', 7],
+           ['z', 'x', 6], ['x', 'z', 4]]
+    for v in vert:
+        graph2.add_vertex(v)
+    for e in edg:
+        graph2.add_edge(e[0], e[1], e[2])
+
+    graph2.dijkstra('s')
+        
+    graph2.display()
+
+    print(graph2.get_path('s', 'x'))
+
+
